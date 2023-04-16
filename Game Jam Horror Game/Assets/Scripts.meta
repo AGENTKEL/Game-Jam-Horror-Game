@@ -1,6 +1,13 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Game Jam Horror Game/Assets/Scripts.meta
 guid: 278caed14ac0bb640be8527c6b7428f2
 folderAsset: yes
+========
+guid: bfe59a3291f0c164e8dabac677968290
+folderAsset: yes
+timeCreated: 1501521537
+licenseType: Store
+>>>>>>>> main:Game Jam Horror Game/Assets/Abandoned_Asylum/Prefabs.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
