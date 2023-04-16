@@ -10,23 +10,14 @@ public class PlayerController : MonoBehaviour
     private bool groundedPlayer;
     public float playerSpeed = 2.0f;
     public float playerSprintSpeed = 4.0f;
+    public float crouchSpeed = 1f;
     private float gravityValue = -9.81f;
     public float mouseSensitivity = 1f;
     private float xRotation = 0f;
-
-    [Header("Crouching stuff")]
-    [SerializeField] private float crouchSpeed = 1f;
-    [SerializeField] private float crouchHeight = 0.5f;
-    [SerializeField] private float standingHeight = 2f;
-    [SerializeField] private float timeToCrouch = 0.25f;
-    [SerializeField] private Vector3 crouchingCenter = new Vector3(0, 0.5f, 0);
-    [SerializeField] private Vector3 standingCenter = new Vector3(0, 0, 0);
     private bool isCrouching = false;
-    private bool duringCrouchAnimation;
-
     private bool isSprinting = false;
-
     private float defaultYPos = 0f;
+    [SerializeField] private float t = 3f;
 
     void Start()
     {
@@ -37,9 +28,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-            HandleCrouch();
-
 
         groundedPlayer = controller.isGrounded;
 
@@ -62,51 +50,27 @@ public class PlayerController : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -85f, 85f);
+        xRotation = Mathf.Clamp(xRotation, -80f, 80f);
 
         PlayerCam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
 
-        
-    }
-
-    private void HandleCrouch()
-    {
-        if(!duringCrouchAnimation)
-            StartCoroutine(CrouchStand());
-    }
-
-    private IEnumerator CrouchStand()
-    {
-        if(isCrouching && Physics.Raycast(PlayerCam.transform.position, Vector3.up, 1f))
-            yield break;
-
-        duringCrouchAnimation = true;
-
-        float timeElapsed = 0;
-        float targetHeight = isCrouching ? standingHeight : crouchHeight;
-        float currentHeight = controller.height;
-        Vector3 targetCenter = isCrouching ? standingCenter : crouchingCenter;
-        Vector3 currentCenter = controller.center;
-
-        while(timeElapsed < timeToCrouch)
-        {
-            Vector3 Crouchposition = new Vector3(transform.position.x, 0.08f, transform.position.z); //0.8 will have to change if the height changes (probably)
-
-            controller.height = Mathf.Lerp(currentHeight, targetHeight, timeElapsed/timeToCrouch);
-            controller.center = Vector3.Slerp(currentCenter, targetCenter, timeElapsed/timeToCrouch);
-            if (!isCrouching)
-                transform.position = Vector3.Slerp(transform.position, Crouchposition, 4 * timeElapsed/timeToCrouch);
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        controller.height = targetHeight;
-        controller.center = targetCenter;
-
-        isCrouching = !isCrouching;
-
-        duringCrouchAnimation = false;
+        //re-purposed code from another project aka crouching:
+            Vector3 positionZero = new Vector3(0, 0.5f, 0);
+            Vector3 normalCamPos = new Vector3(0f, 1f, 0f);
+            if (Input.GetKey(KeyCode.LeftControl))
+			{
+                PlayerCam.transform.localPosition = Vector3.Slerp(PlayerCam.transform.localPosition, positionZero, t * Time.deltaTime);
+                controller.height = Mathf.Lerp(controller.height, 1.5f, t * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, 0.83f, transform.position.z), t * Time.deltaTime);
+                isCrouching = true;
+            }
+			else if (controller.height != 2.8 && !Physics.Raycast(PlayerCam.transform.position, Vector3.up, 1.4f))
+			{
+                PlayerCam.transform.localPosition = Vector3.Slerp(PlayerCam.transform.localPosition, normalCamPos, t * Time.deltaTime);
+                controller.height = Mathf.Lerp(controller.height, 2.8f, t * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, 1.48f, transform.position.z), (t * 2) * Time.deltaTime); //a little janky but im done working on this for today hahaha
+                isCrouching = false;
+            }
     }
 }
-
