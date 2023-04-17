@@ -18,30 +18,50 @@ public class PlayerController : MonoBehaviour
     private float xRotation = 0f;
     private bool isCrouching = false;
     private bool isSprinting = false;
-    private float defaultYPos = 0f;
     [SerializeField] private float t = 3f;
 
+    [Header("Headbob stuff")]
+    [SerializeField] private float walkBobSpeed = 14f;
+    [SerializeField] private float walkBobAmount = 0.05f;
+    [SerializeField] private float sprintBobSpeed = 18f;
+    [SerializeField] private float sprintBobAmount = 0.1f;
+    [SerializeField] private float crouchBobSpeed = 8f;
+    [SerializeField] private float crouchBobAmount = 0.025f;
+    private float defaultYPos;
+    private float crouchedYPos;
+    private float timer;
+
     private Vector3 move;
+    private bool isMoving;
+
 
     void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         defaultYPos = PlayerCam.transform.localPosition.y;
+        crouchedYPos = (defaultYPos / 2);
     }
 
     void Update()
     {
+        
 
         groundedPlayer = controller.isGrounded;
 
-        //if (groundedPlayer && playerVelocity.y < 0)
-          //  playerVelocity.y = 0f;
-        // i dont know if this is needed
+        if (groundedPlayer && playerVelocity.y < 0)
+            playerVelocity.y = 0f;
 
-        isSprinting = Input.GetKey(KeyCode.LeftShift);    
+        isSprinting = Input.GetKey(KeyCode.LeftShift);
 
         move = Input.GetAxis("Horizontal") * transform.right + Input.GetAxis("Vertical") * transform.forward;
+        if (move == Vector3.zero)
+            isMoving = false;
+        else 
+            isMoving = true;
+
+        HandleHeadBob();
+
         //move
         controller.Move(Vector3.ClampMagnitude(move, 1.0f) * Time.deltaTime * (isCrouching ? crouchSpeed : isSprinting ? playerSprintSpeed : playerSpeed));
 
@@ -77,6 +97,18 @@ public class PlayerController : MonoBehaviour
             }
 
         isCrouching = (controller.height <= 2.2);
+    }
+
+    private void HandleHeadBob()
+    {
         
+        if(isMoving == true)
+        {
+            timer += Time.deltaTime * (isCrouching ? crouchBobSpeed : isSprinting ? sprintBobSpeed : walkBobSpeed);
+            PlayerCam.transform.localPosition = new Vector3(
+                PlayerCam.transform.localPosition.x,
+                (isCrouching ? crouchedYPos : defaultYPos) + Mathf.Sin(timer) * (isCrouching ? crouchBobAmount : isSprinting ? sprintBobAmount : walkBobAmount),
+                PlayerCam.transform.localPosition.z);
+        }
     }
 }

@@ -1230,6 +1230,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5735670378683845301, guid: 36921cb57910ec144ad1bc609d31edc2,
+        type: 3}
+      propertyPath: walkBobAmount
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 5735670378683845301, guid: 36921cb57910ec144ad1bc609d31edc2,
+        type: 3}
+      propertyPath: crouchBobAmount
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 5735670378683845301, guid: 36921cb57910ec144ad1bc609d31edc2,
+        type: 3}
+      propertyPath: sprintBobAmount
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5735670379099195298, guid: 36921cb57910ec144ad1bc609d31edc2,
         type: 3}
       propertyPath: m_CastShadows
