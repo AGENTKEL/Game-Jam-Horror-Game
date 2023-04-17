@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Bunker.unity
+  - enabled: 0
+    path: Assets/RJStorage/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Bunker.unity
+    guid: a69167362af62e74f84113b5acd611a9
   m_configObjects: {}
