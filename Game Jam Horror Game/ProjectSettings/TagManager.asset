@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - ground
+  - Interactables/Keypad
+  - Interactables/AudioLog
+  - Interactables/Door
+  - Interactables/Key
   layers:
   - Default
   - TransparentFX
