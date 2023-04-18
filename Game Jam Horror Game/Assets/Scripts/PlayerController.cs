@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public Transform PlayerCam;
     [SerializeField] private Vector3 playerVelocity = Vector3.zero;
     [SerializeField] private Transform groundcheck;
+    static public bool movementEnabled = true;
 
     public float playerSpeed = 2.0f;
     public float playerSprintSpeed = 4.0f;
@@ -70,10 +71,13 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         checkIfGrounded();
-        HandleMovement();
-        HandleHeadBob();
-        HandleCamera();
-        HandleCrouching();
+        if (movementEnabled)
+        {
+            HandleMovement();
+            HandleHeadBob();
+            HandleCamera();
+            HandleCrouching();
+        }
     }
 
     private void HandleMovement()
