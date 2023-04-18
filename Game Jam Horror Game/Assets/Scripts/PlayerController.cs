@@ -6,19 +6,24 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController controller;
     public Transform PlayerCam;
-    private Vector3 playerVelocity;
+    [SerializeField] private Vector3 playerVelocity = Vector3.zero;
+    [SerializeField] private Transform groundcheck;
 
-    private bool groundedPlayer;
     public float playerSpeed = 2.0f;
     public float playerSprintSpeed = 4.0f;
     public float crouchSpeed = 1f;
-    private float gravityValue = -9.81f;
+    private float gravityValue = 9.81f;
 
     public float mouseSensitivity = 1f;
     private float xRotation = 0f;
-    private bool isCrouching = false;
     private bool isSprinting = false;
     [SerializeField] private float t = 3f;
+
+    [SerializeField] private Vector3 move;
+    private bool isMoving;
+    [SerializeField] private bool Grounded;
+
+    public LayerMask groundMask;
 
     [Header("Headbob stuff")]
     [SerializeField] private float walkBobSpeed = 14f;
@@ -31,13 +36,26 @@ public class PlayerController : MonoBehaviour
     private float crouchedYPos;
     private float timer;
 
-    private Vector3 move;
-    private bool isMoving;
+    private Vector3 newmove;
+    private Vector3 finalmove;
 
+    private float getupYPos;
+    public float getupmodifier;
+
+    private bool isCrouching = false;
+    private float floorheight;
+
+
+    //CROUCHING IS STILL JITTERY BUT I AM SO DONE WORKING ON THIS FOR NOW ITS BEEN DAYS
+
+
+    void Awake() 
+    {
+        controller = gameObject.GetComponent<CharacterController>();
+    }
 
     void Start()
     {
-        controller = gameObject.GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         defaultYPos = PlayerCam.transform.localPosition.y;
         crouchedYPos = (defaultYPos / 2);
@@ -45,13 +63,15 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        
+        checkIfGrounded();
+        HandleMovement();
+        HandleHeadBob();
+        HandleCamera();
+        HandleCrouching();
+    }
 
-        groundedPlayer = controller.isGrounded;
-
-        if (groundedPlayer && playerVelocity.y < 0)
-            playerVelocity.y = 0f;
-
+    private void HandleMovement()
+    {
         isSprinting = Input.GetKey(KeyCode.LeftShift);
 
         move = Input.GetAxis("Horizontal") * transform.right + Input.GetAxis("Vertical") * transform.forward;
@@ -59,17 +79,52 @@ public class PlayerController : MonoBehaviour
             isMoving = false;
         else 
             isMoving = true;
-
-        HandleHeadBob();
-
-        //move
-        controller.Move(Vector3.ClampMagnitude(move, 1.0f) * Time.deltaTime * (isCrouching ? crouchSpeed : isSprinting ? playerSprintSpeed : playerSpeed));
-
-        //gravity
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
         
+        switch(Grounded)
+        {
+            case true:
+                playerVelocity.y = 0f;
+                break;
+            case false:
+                playerVelocity.y -= gravityValue * Time.deltaTime;
+                break;
+        }
 
+        newmove = (Vector3.ClampMagnitude(move, 1.0f) * Time.deltaTime * (isCrouching ? crouchSpeed : isSprinting ? playerSprintSpeed : playerSpeed));
+
+        finalmove = new Vector3(newmove.x, playerVelocity.y * Time.deltaTime, newmove.z);
+
+        controller.Move(finalmove);
+    }
+
+    private void HandleCrouching()
+    {
+        Vector3 crouchCamPos = new Vector3(0, 0.5f, 0);
+        Vector3 normalCamPos = new Vector3(0f, 1f, 0f);
+        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            floorheight = (transform.position.y - (controller.height / 2));
+        }
+
+        if (Input.GetKey(KeyCode.LeftControl))
+			{
+                PlayerCam.transform.localPosition = Vector3.Lerp(PlayerCam.transform.localPosition, crouchCamPos, t * Time.deltaTime);
+                controller.height = Mathf.Lerp(controller.height, 1.5f, t * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, (floorheight + 0.75f), transform.position.z), ((t * 2) * Time.deltaTime));
+            }
+		else if (controller.height < 2.8f && !Physics.Raycast(PlayerCam.transform.position, Vector3.up, 1.4f))
+			{
+                PlayerCam.transform.localPosition = Vector3.Lerp(PlayerCam.transform.localPosition, normalCamPos, t * Time.deltaTime);
+                controller.height = Mathf.Lerp(controller.height, 2.8f, t * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, (floorheight + 1.48f), transform.position.z), ((t * 2) * Time.deltaTime));
+            }
+        if (controller.height > 2.75f)
+            controller.height = 2.8f;
+        isCrouching = (controller.height <= 2.2);
+    }
+
+    private void HandleCamera()
+    {
         //camera
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -79,24 +134,12 @@ public class PlayerController : MonoBehaviour
 
         PlayerCam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
+    }
 
-        //re-purposed code from another project aka crouching:
-         Vector3 crouchCamPos = new Vector3(0, 0.5f, 0);
-         Vector3 normalCamPos = new Vector3(0f, 1f, 0f);
-        if (Input.GetKey(KeyCode.LeftControl))
-			{
-                PlayerCam.transform.localPosition = Vector3.Slerp(PlayerCam.transform.localPosition, crouchCamPos, t * Time.deltaTime);
-                controller.height = Mathf.Lerp(controller.height, 1.5f, t * Time.deltaTime);
-                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, 0.83f, transform.position.z), t * Time.deltaTime);
-            }
-		else if (controller.height != 2.8 && !Physics.Raycast(PlayerCam.transform.position, Vector3.up, 1.4f))
-			{
-                PlayerCam.transform.localPosition = Vector3.Slerp(PlayerCam.transform.localPosition, normalCamPos, t * Time.deltaTime);
-                controller.height = Mathf.Lerp(controller.height, 2.8f, t * Time.deltaTime);
-                transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, 1.48f, transform.position.z), (t * 2) * Time.deltaTime); //a little janky but im done working on this for today hahaha
-            }
-
-        isCrouching = (controller.height <= 2.2);
+    private void checkIfGrounded()
+    {
+        groundcheck.localPosition = isCrouching ? new Vector3(0, -0.75f, 0) : new Vector3 (0, -1.4f, 0);
+        Grounded = Physics.CheckSphere(groundcheck.position, 0.25f, groundMask);
     }
 
     private void HandleHeadBob()
@@ -107,7 +150,7 @@ public class PlayerController : MonoBehaviour
             timer += Time.deltaTime * (isCrouching ? crouchBobSpeed : isSprinting ? sprintBobSpeed : walkBobSpeed);
             PlayerCam.transform.localPosition = new Vector3(
                 PlayerCam.transform.localPosition.x,
-                (isCrouching ? crouchedYPos : defaultYPos) + Mathf.Sin(timer) * (isCrouching ? crouchBobAmount : isSprinting ? sprintBobAmount : walkBobAmount),
+                Mathf.Lerp(PlayerCam.transform.localPosition.y, (isCrouching ? crouchedYPos : defaultYPos) + Mathf.Sin(timer) * (isCrouching ? crouchBobAmount : isSprinting ? sprintBobAmount : walkBobAmount), (t * 2) * Time.deltaTime),
                 PlayerCam.transform.localPosition.z);
         }
     }

@@ -8,10 +8,14 @@ public class Flashlight : MonoBehaviour
     private bool FlashlightOn = true;
     private Light lightswitch;
 
-    void Start()
+    void Awake() 
     {
         lightswitch = gameObject.GetComponent<Light>();
-        FlashlightOn = lightswitch;
+    }
+
+    void Start()
+    {
+        FlashlightOn = lightswitch.enabled;
     }
 
     void Update()
