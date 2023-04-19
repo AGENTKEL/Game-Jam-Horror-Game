@@ -6,6 +6,7 @@ public class GlassDoorScare : MonoBehaviour
 {
     public GameObject sound;
     public Transform spawnPos;
+    public MonsterScriptedAi monster;
 
     public void Start()
     {
@@ -16,14 +17,16 @@ public class GlassDoorScare : MonoBehaviour
     {
         if (other.CompareTag("Test"))
         {
-            Instantiate(sound, spawnPos.position, spawnPos.rotation);
+            monster.gameObject.SetActive(true);
             Debug.Log("Jumpscare Played");
-            Invoke("DestroyEvent", 0.01f);
+            Invoke("DestroyEvent", 0.2f);
         }
     }
 
+
     public void DestroyEvent()
     {
+        Instantiate(sound, spawnPos.position, spawnPos.rotation);
         Destroy(gameObject);
     }
 }

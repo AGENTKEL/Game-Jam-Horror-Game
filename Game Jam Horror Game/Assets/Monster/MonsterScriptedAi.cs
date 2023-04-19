@@ -32,6 +32,11 @@ public class MonsterScriptedAi : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        Invoke("DestroyMonster", 3f);
+    }
+
     private void Update()
     {
         //Check for sight and attack range
@@ -95,5 +100,10 @@ public class MonsterScriptedAi : MonoBehaviour
     private void ResetAttack()
     {
         alreadyAttacked = false;
+    }
+
+    public void DestroyMonster()
+    {
+        Destroy(gameObject);
     }
 }
