@@ -8,6 +8,8 @@ public class LockerRoomScare : MonoBehaviour
     public GameObject sound2;
     public Transform spawnPos;
 
+    LockerOpenScript doorOpen;
+
     public void Start()
     {
 
@@ -19,6 +21,7 @@ public class LockerRoomScare : MonoBehaviour
         {
             Instantiate(sound, spawnPos.position, spawnPos.rotation);
             Instantiate(sound2, spawnPos.position, spawnPos.rotation);
+            doorOpen.OpenDoorAndClose();
             Debug.Log("Jumpscare Played");
             Invoke("DestroyEvent", 0.01f);
         }

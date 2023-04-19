@@ -7,6 +7,7 @@ public class LockerOpenScript : MonoBehaviour
     public Animator animator;
 
 
+
     public void OpenDoorAndClose()
     {
         animator.SetBool("Is Open", true);
