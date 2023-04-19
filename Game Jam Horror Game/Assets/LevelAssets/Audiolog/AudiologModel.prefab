@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2891978924090203240}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AudiologModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 2329042364768529712}
   - component: {fileID: 613972707729413242}
   - component: {fileID: 4152599015799402734}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}

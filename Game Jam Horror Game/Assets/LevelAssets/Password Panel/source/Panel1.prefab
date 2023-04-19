@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2161938118245650754}
   - component: {fileID: 5431728013388881188}
   - component: {fileID: 1958610395180278240}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Panel1
-  m_TagString: Untagged
+  m_TagString: Keypad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
