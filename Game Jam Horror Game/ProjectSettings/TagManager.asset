@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Test
   - Keypad
+  - Door
   layers:
   - Default
   - TransparentFX

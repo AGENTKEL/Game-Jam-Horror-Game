@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public float crouchSpeed = 1f;
     private float gravityValue = 9.81f;
 
-    static public float mouseSensitivity = 180f;
+    private float mouseSensitivity = 180f;
     private float xRotation = 0f;
     private bool isSprinting = false;
     [SerializeField] private float t = 3f;
@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        mouseSensitivity = MMOptions.mouseSensitivity;
+        //mouseSensitivity = MMOptions.mouseSensitivity;
         checkIfGrounded();
         if (movementEnabled)
         {

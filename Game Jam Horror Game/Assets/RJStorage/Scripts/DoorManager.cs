@@ -9,34 +9,77 @@ public class DoorManager : MonoBehaviour
     //yes, im this lazy.
     public GameObject GObunkerDoor1;
     public Animator bunkerDoor1;
+    public bool bunkerdoor1open;
 
     public GameObject GObunkerDoor2;
     public Animator bunkerDoor2;
+    public bool bunkerdoor2open;
 
     public GameObject GOdoubleDoors1L;
     public GameObject GOdoubleDoors1R;
     public Animator doubleDoors1L;
     public Animator doubleDoors1R;
+    public bool doubledoors1open = false;
 
     public GameObject GOalreadyOpenDoor;
     public Animator alreadyOpenDoor;
+    public bool alreadyopendooropen = true;
 
     public GameObject GOdoubleDoors2L;
     public GameObject GOdoubleDoors2R;
     public Animator doubleDoors2L;
     public Animator doubleDoors2R;
+    public bool doubledoors2open = false;
 
     public GameObject GOtoiletL;
-    public GameObject GOtoiletR;
     public Animator ToiletL;
+    public bool toiletLopen = false;
+    
+    public GameObject GOtoiletR;
     public Animator ToiletR;
+    public bool toiletRopen = false;
 
+    [Header("sounds")]
+    public AudioClip BunkerDoorSound;
+    public AudioClip RegularDoorSound;
 
     void Update()
     {
+        //god this code is stinky
         if (InteractionManager.DoorInteracted == true)
         {
-            
+            if (InteractionManager.interactedObject == GObunkerDoor1 && KeypadManager.KeypadOneComplete && bunkerdoor1open == false)
+            {
+                bunkerDoor1.Play("BunkerDoorOpen", 0, 0.0f);
+                bunkerdoor1open = true;
+            }
+            else if (InteractionManager.interactedObject == GObunkerDoor2 && KeypadManager.KeypadTwoComplete && bunkerdoor2open == false)
+            {
+                bunkerDoor2.Play("BunkerDoorOpen", 0, 0.0f);
+                bunkerdoor2open = true;
+                print("reg");
+            }
+            else if (InteractionManager.interactedObject == GOdoubleDoors1L || GOdoubleDoors1R)
+            {
+                
+            }
+            else if (InteractionManager.interactedObject == GOalreadyOpenDoor)
+            {
+                
+            }
+            else if (InteractionManager.interactedObject == GOdoubleDoors2L || GOdoubleDoors2R)
+            {
+                
+            }
+            else if (InteractionManager.interactedObject == GOtoiletL)
+            {
+                
+            }
+            else if (InteractionManager.interactedObject == GOtoiletR)
+            {
+                
+            }
+            InteractionManager.DoorInteracted = false;
         }
     }
 }

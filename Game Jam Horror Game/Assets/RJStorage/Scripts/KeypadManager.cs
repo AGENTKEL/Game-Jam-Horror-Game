@@ -22,6 +22,7 @@ public class KeypadManager : MonoBehaviour
 
     public AudioClip successClip;
     public AudioClip failClip;
+    public AudioClip buttonPress;
 
 
     void Awake()

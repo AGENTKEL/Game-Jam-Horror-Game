@@ -8,7 +8,7 @@ public class InteractionManager : MonoBehaviour
 
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private float rayDistance;
-    static public RaycastHit hit;
+    public RaycastHit hit;
     private Ray ray;
 
     public GameObject handUI;
@@ -18,6 +18,8 @@ public class InteractionManager : MonoBehaviour
 
     static public bool KeypadUI;
     public GameObject KeypadDisplay;
+
+    static public GameObject interactedObject;
 
     void Awake() 
     {
@@ -38,6 +40,7 @@ public class InteractionManager : MonoBehaviour
                 handUI.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.E))
                 {
+                    interactedObject = hit.transform.gameObject;
                     WhichThingWasInteractedWith();
                 }
             }

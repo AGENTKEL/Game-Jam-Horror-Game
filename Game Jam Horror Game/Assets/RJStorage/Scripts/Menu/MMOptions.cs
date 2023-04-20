@@ -15,6 +15,8 @@ public class MMOptions : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        mouseSensitivity = 180f;
+        headBobEnabled = true;
     }
 
     public void AudioChange(System.Single vol)
