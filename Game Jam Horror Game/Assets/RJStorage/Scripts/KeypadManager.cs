@@ -16,10 +16,12 @@ public class KeypadManager : MonoBehaviour
     public GameObject KeypadTwo;
 
     public TMPro.TextMeshProUGUI display;
-    public string inputnums;
 
     static public bool KeypadOneComplete;
     static public bool KeypadTwoComplete;
+
+    public AudioClip successClip;
+    public AudioClip failClip;
 
 
     void Awake()
@@ -40,7 +42,8 @@ public class KeypadManager : MonoBehaviour
 
     void Update()
     {
-        
+        if (InteractionManager.KeypadUI == false)
+            display.text = "";
     }
 
     public void KeypadPress()
@@ -60,11 +63,11 @@ public class KeypadManager : MonoBehaviour
                     //play success audio
                     InteractionManager.KeypadUI = false;
                     display.text = "";
-                    print (KeypadOneComplete);
                 }
                 else
                 {
-
+                    //play fail audio
+                    display.text = "";
                 }
             }
             else if (KeypadOneComplete && !KeypadTwoComplete)
@@ -72,10 +75,15 @@ public class KeypadManager : MonoBehaviour
                 if (display.text == secondPassword)
                 {
                     KeypadTwoComplete = true;
+                    //play success audio
+                    InteractionManager.KeypadUI = false;
+                    display.text = "";
+
                 }
                 else
                 {
-
+                    //play fail audio
+                    display.text = "";
                 }
             }
         }

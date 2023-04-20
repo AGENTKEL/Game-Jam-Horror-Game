@@ -8,11 +8,13 @@ public class InteractionManager : MonoBehaviour
 
     [SerializeField] private LayerMask collisionMask;
     [SerializeField] private float rayDistance;
-    RaycastHit hit;
+    static public RaycastHit hit;
     private Ray ray;
 
     public GameObject handUI;
     public Transform PCAM;
+
+    static public bool DoorInteracted;
 
     static public bool KeypadUI;
     public GameObject KeypadDisplay;
@@ -31,7 +33,6 @@ public class InteractionManager : MonoBehaviour
             ray = new Ray (PCAM.position, PCAM.forward);
             KeypadDisplay.SetActive(false);
             disablePlayer();
-
             if (Physics.Raycast (ray, out hit, rayDistance, collisionMask))
             {
                 handUI.SetActive(true);
@@ -62,6 +63,10 @@ public class InteractionManager : MonoBehaviour
                 KeypadDisplay.SetActive(true);
                 disablePlayer();
             }
+        if (hit.collider.tag == "Door")
+        {
+            DoorInteracted = true;
+        }
     }
 
     private void disablePlayer()
