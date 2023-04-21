@@ -19,7 +19,7 @@ public class GlassDoorScare : MonoBehaviour
         {
             monster.gameObject.SetActive(true);
             Debug.Log("Jumpscare Played");
-            Invoke("DestroyEvent", 0.2f);
+            Invoke("DestroyEvent", 0.3f);
         }
     }
 
