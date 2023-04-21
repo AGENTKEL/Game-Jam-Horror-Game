@@ -12,17 +12,23 @@ public class KeypadManager : MonoBehaviour
     static public string firstPassword;
     static public string secondPassword;
 
+
     public GameObject KeypadOne;
     public GameObject KeypadTwo;
 
     public TMPro.TextMeshProUGUI display;
+
+    public TMPro.TextMeshPro note1;
+    public TMPro.TextMeshPro note2;
 
     static public bool KeypadOneComplete;
     static public bool KeypadTwoComplete;
 
     public AudioClip successClip;
     public AudioClip failClip;
-    public AudioClip buttonPress;
+    public AudioClip buttonPress = default;
+
+    private AudioSource audiosrc;
 
     public AudioClip bunkerdoorunlockSound;
 
@@ -41,6 +47,9 @@ public class KeypadManager : MonoBehaviour
         secondPassword = System.String.Format("{0:0000}", IpasswordTwo);
         print (firstPassword);
         print (secondPassword);
+        audiosrc = KeypadOne.GetComponent<AudioSource>();
+        note1.text = firstPassword;
+        note2.text = secondPassword;
     }
 
     void Update()
@@ -54,6 +63,7 @@ public class KeypadManager : MonoBehaviour
         string lastButtonPressed = EventSystem.current.currentSelectedGameObject.name;
         if (display.text.Length < 4 && (lastButtonPressed != "Enter" && lastButtonPressed != "Back"))
         {
+            audiosrc.PlayOneShot(buttonPress);
             display.text = (display.text + lastButtonPressed);
         }
         if (lastButtonPressed == "Enter")
@@ -63,13 +73,16 @@ public class KeypadManager : MonoBehaviour
                 if (display.text == firstPassword)
                 {
                     KeypadOneComplete = true;
-                    //play success audio
+                    audiosrc.clip = successClip;
+                    audiosrc.Play();
                     InteractionManager.KeypadUI = false;
                     display.text = "";
+                    audiosrc = KeypadTwo.GetComponent<AudioSource>();
                 }
                 else
                 {
-                    //play fail audio
+                    audiosrc.clip = failClip;
+                    audiosrc.Play();
                     display.text = "";
                 }
             }
@@ -78,14 +91,15 @@ public class KeypadManager : MonoBehaviour
                 if (display.text == secondPassword)
                 {
                     KeypadTwoComplete = true;
-                    //play success audio
+                    audiosrc.clip = successClip;
+                    audiosrc.Play();
                     InteractionManager.KeypadUI = false;
                     display.text = "";
-
                 }
                 else
                 {
-                    //play fail audio
+                    audiosrc.clip = failClip;
+                    audiosrc.Play();
                     display.text = "";
                 }
             }
@@ -93,7 +107,8 @@ public class KeypadManager : MonoBehaviour
         if (lastButtonPressed == "Back")
         {
             if (display.text.Length == 0) return;
-
+            audiosrc.clip = buttonPress;
+            audiosrc.Play();
             display.text = display.text.Substring(0, display.text.Length - 1);
         }
     }

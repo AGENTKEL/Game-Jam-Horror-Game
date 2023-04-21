@@ -80,10 +80,11 @@ public class MonsterAI : MonoBehaviour
 
         transform.LookAt(player);
 
+        PlayerController.dying = true;
+
         if (!alreadyAttacked)
         {
             //Attack code here
-
 
             animator.SetTrigger("Attack");
 

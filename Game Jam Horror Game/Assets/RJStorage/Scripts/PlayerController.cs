@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Transform monster;
+
     [SerializeField] private float playerHeight;
     [SerializeField] private float crouchHeight;
     private CharacterController controller;
@@ -11,13 +13,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 playerVelocity = Vector3.zero;
     [SerializeField] private Transform groundcheck;
     static public bool movementEnabled = true;
+    static public bool dying = false;
 
     public float playerSpeed = 2.0f;
     public float playerSprintSpeed = 4.0f;
     public float crouchSpeed = 1f;
     private float gravityValue = 9.81f;
 
-    private float mouseSensitivity = 180f;
+    [SerializeField] private float mouseSensitivity = 180f;
     private float xRotation = 0f;
     private bool isSprinting = false;
     [SerializeField] private float t = 3f;
@@ -48,7 +51,16 @@ public class PlayerController : MonoBehaviour
     private bool isCrouching = false;
     private float floorheight;
 
-    static public bool HBenabled = true;
+    [SerializeField] private bool HBenabled = true;
+
+    [Header("Footstep stuff")]
+    [SerializeField] private float baseStepSpeed = 0.5f;
+    [SerializeField] private float crouchStepMultiplier = 1.5f;
+    [SerializeField] private float sprintStepMultiplier = 0.6f;
+    [SerializeField] private AudioSource footstepAudiosrc;
+    [SerializeField] private AudioClip[] stepClips = default;
+    private float footstepTimer = 0;
+    private float GetCurrentOffset => isCrouching ? baseStepSpeed * crouchStepMultiplier : isSprinting ? baseStepSpeed * sprintStepMultiplier : baseStepSpeed;
 
     
 
@@ -70,14 +82,23 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        
+        //only commented because these variables only show up if playing game from menu, so they don't work in testing.
         //mouseSensitivity = MMOptions.mouseSensitivity;
+        //HBenabled = MMOptions.headBobEnabled;
         checkIfGrounded();
-        if (movementEnabled)
+        if (movementEnabled && !dying)
         {
             HandleMovement();
             HandleHeadBob();
+            HandleFootSteps();
             HandleCamera();
             HandleCrouching();
+        }
+        else if (dying)
+        {
+            Quaternion lookatMonsterDirection = Quaternion.LookRotation(monster.position - PlayerCam.position);
+            PlayerCam.rotation = Quaternion.Lerp(PlayerCam.rotation, lookatMonsterDirection, (10f * Time.deltaTime));
         }
     }
 
@@ -110,7 +131,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleCrouching()
     {
-        Vector3 crouchCamPos = new Vector3(0, 0.35f, 0); //i just have to figure these two out after i get the height right
+        Vector3 crouchCamPos = new Vector3(0, 0.35f, 0);
         Vector3 normalCamPos = new Vector3(0f, 0.75f, 0f);
         if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.LeftControl))
         {
@@ -168,5 +189,24 @@ public class PlayerController : MonoBehaviour
             }
         }
         
+    }
+
+    private void HandleFootSteps()
+    {
+        if(!Grounded) return;
+        if(!isMoving) return;
+
+        footstepTimer -= Time.deltaTime;
+
+        if(footstepTimer <= 0)
+        {
+            if(isCrouching)
+                footstepAudiosrc.volume = 0.1f;
+            else
+                footstepAudiosrc.volume = 0.4f;
+
+            footstepAudiosrc.PlayOneShot(stepClips[Random.Range(0, stepClips.Length - 1)]);
+            footstepTimer = GetCurrentOffset;
+        }   
     }
 }

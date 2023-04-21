@@ -11,15 +11,22 @@ public class InteractionManager : MonoBehaviour
     public RaycastHit hit;
     private Ray ray;
 
+    public GameObject Key1;
+    public GameObject Key2;
+
     public GameObject handUI;
     public Transform PCAM;
 
     static public bool DoorInteracted;
+    static public bool AudioLogInteracted;
 
     static public bool KeypadUI;
     public GameObject KeypadDisplay;
 
     static public GameObject interactedObject;
+
+    static public bool KeyGet1;
+    static public bool KeyGet2;
 
     void Awake() 
     {
@@ -66,10 +73,20 @@ public class InteractionManager : MonoBehaviour
                 KeypadDisplay.SetActive(true);
                 disablePlayer();
             }
-        if (hit.collider.tag == "Door")
-        {
+        else if (hit.collider.tag == "Door")
             DoorInteracted = true;
+        else if (interactedObject == Key1)
+        {
+            KeyGet1 = true;
+            Destroy(Key1);
         }
+        else if (interactedObject == Key2)
+        {
+            KeyGet2 = true;
+            Destroy(Key2);
+        }
+        else if (hit.collider.tag == "AudioLog")
+            AudioLogInteracted = true;
     }
 
     private void disablePlayer()
