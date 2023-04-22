@@ -20,7 +20,8 @@ public class SoundManager : MonoBehaviour
     public void Start()
     {
         Invoke("PlaySound", 5f);
-        InvokeRepeating("PlaySound", Random.Range(12f, 25f), Random.Range(12f, 25f));
+        InvokeRepeating("PlaySound", Random.Range(10f, 22f), Random.Range(10f, 22f));
+        InvokeRepeating("PlaySound3", Random.Range(20f, 40f), Random.Range(20f, 40f));
     }
 
     public void PlaySound()

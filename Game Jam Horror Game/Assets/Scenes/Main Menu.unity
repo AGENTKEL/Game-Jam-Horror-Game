@@ -1122,7 +1122,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -159.4}
+  m_AnchoredPosition: {x: 0, y: -142.3}
   m_SizeDelta: {x: 100, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &579888530
@@ -1396,7 +1396,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -36.1, y: -97.100006}
+  m_AnchoredPosition: {x: -36.100006, y: -53.30002}
   m_SizeDelta: {x: -33.5, y: -340}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &713632211
@@ -1742,7 +1742,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 120.1}
+  m_AnchoredPosition: {x: 0, y: 163.9}
   m_SizeDelta: {x: -120, y: -340}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &754370205
@@ -3575,7 +3575,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Programmer, scripts
+  m_text: Programmer, team mascot
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3757,7 +3757,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -65.1, y: -21.699997}
+  m_AnchoredPosition: {x: -65.100006, y: 22.09999}
   m_SizeDelta: {x: -65.2, y: -340}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1591292689
@@ -4284,7 +4284,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -153.3, y: 46.4}
+  m_AnchoredPosition: {x: -153.3, y: 90.2}
   m_SizeDelta: {x: -120, y: -340}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1790220358
