@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Test
+  - Keypad
+  - Door
+  - AudioLog
   layers:
   - Default
   - TransparentFX
@@ -12,7 +15,7 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
+  - Interactable
   - 
   - 
   - 
