@@ -41,6 +41,8 @@ public class DoorManager : MonoBehaviour
     public AudioClip bunkerdooropenSound;
 
     private AudioSource audiosrc;
+
+    static public bool chaseOn;
     
 
 
@@ -74,7 +76,7 @@ public class DoorManager : MonoBehaviour
                     doubleDoors1L.Play("DC_DD1L", 0, 0.0f);
                     doubleDoors1R.Play("DC_DD1R", 0, 0.0f);
                 }
-                else
+                else if (!chaseOn)
                 {
                     doubleDoors1L.Play("DO_DD1L", 0, 0.0f);
                     doubleDoors1R.Play("DO_DD1R", 0, 0.0f);
@@ -89,7 +91,7 @@ public class DoorManager : MonoBehaviour
                     doubleDoors2L.Play("DC_DD2L", 0, 0.0f);
                     doubleDoors2R.Play("DC_DD2R", 0, 0.0f);
                 }
-                else
+                else if (!chaseOn)
                 {
                     doubleDoors2L.Play("DO_DD2L", 0, 0.0f);
                     doubleDoors2R.Play("DO_DD2R", 0, 0.0f);
@@ -101,7 +103,7 @@ public class DoorManager : MonoBehaviour
             {
                 if (alreadyopendooropen)
                     anim.Play("DoorClose", 0, 0.0f);
-                else
+                else if (!chaseOn)
                     anim.Play("DoorOpen", 0, 0.0f);
                 audiosrc.Play();
                 alreadyopendooropen = !alreadyopendooropen;
@@ -110,7 +112,7 @@ public class DoorManager : MonoBehaviour
             {
                 if (toiletLopen)
                     anim.Play("DC_T", 0, 0.0f);
-                else
+                else if (!chaseOn)
                     anim.Play("DO_T", 0, 0.0f);
                 audiosrc.Play();
                 toiletLopen = !toiletLopen;
@@ -119,7 +121,7 @@ public class DoorManager : MonoBehaviour
             {
                 if (toiletRopen)
                     anim.Play("DC_T", 0, 0.0f);
-                else
+                else if (!chaseOn)
                     anim.Play("DO_T", 0, 0.0f);
                 audiosrc.Play();
                 toiletRopen = !toiletRopen;

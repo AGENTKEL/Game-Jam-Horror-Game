@@ -9,6 +9,8 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Bunker");
         Time.timeScale = 1f;
+        PlayerController.mouseUnlocked = false;
+        PlayerController.dying = false;
     }
 
     public void QuitGame()

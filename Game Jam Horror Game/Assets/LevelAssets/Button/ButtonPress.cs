@@ -17,7 +17,7 @@ public class ButtonPress : MonoBehaviour
     public Animator glassDoorOpen2;
     public Animator monsterRage;
     public MonsterAI monsterAI;
-    public SoundManagerExplosions explosions;
+    public GameObject explosions;
 
     public void ButtonPressed()
     {
@@ -28,11 +28,12 @@ public class ButtonPress : MonoBehaviour
         chaseMusicStart.SetActive(true);
         timerStart.SetActive(true);
         jumpscareOff.SetActive(false);
-        explosions.enabled = true;
+        explosions.SetActive(true);
         monsterRage.SetTrigger("Rage");
         glassDoorOpen.SetBool("Opened", true);
         glassDoorOpen2.SetBool("Opened", true);
         Invoke("MonsterCanMove", 3f);
+        DoorManager.chaseOn = true;
     }
 
     public void MonsterCanMove()

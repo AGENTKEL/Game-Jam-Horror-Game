@@ -20,8 +20,12 @@ public class TimerStart: MonoBehaviour
         if (currentTime > 0)
         {
             currentTime -= 1 * Time.deltaTime;
-            print(currentTime);
-            CountDownText.text = currentTime.ToString("0");
+
+            string Minutes = Mathf.Floor(currentTime / 60).ToString("00");
+            string Seconds = (currentTime % 60).ToString("00");
+
+            
+            CountDownText.text = string.Format("{0}:{1}", Minutes, Seconds);
         }
     }
 }

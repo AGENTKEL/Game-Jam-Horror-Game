@@ -62,6 +62,8 @@ public class PlayerController : MonoBehaviour
     private float footstepTimer = 0;
     private float GetCurrentOffset => isCrouching ? baseStepSpeed * crouchStepMultiplier : isSprinting ? baseStepSpeed * sprintStepMultiplier : baseStepSpeed;
 
+    public static bool mouseUnlocked;
+
     
 
 
@@ -84,8 +86,8 @@ public class PlayerController : MonoBehaviour
     {
         
         //only commented because these variables only show up if playing game from menu, so they don't work in testing.
-        //mouseSensitivity = MMOptions.mouseSensitivity;
-        //HBenabled = MMOptions.headBobEnabled;
+        mouseSensitivity = MMOptions.mouseSensitivity;
+        HBenabled = MMOptions.headBobEnabled;
         checkIfGrounded();
         if (movementEnabled && !dying)
         {
@@ -100,6 +102,9 @@ public class PlayerController : MonoBehaviour
             Quaternion lookatMonsterDirection = Quaternion.LookRotation(monster.position - PlayerCam.position);
             PlayerCam.rotation = Quaternion.Lerp(PlayerCam.rotation, lookatMonsterDirection, (10f * Time.deltaTime));
         }
+
+        if (PauseMenu.GameIsPaused || mouseUnlocked)
+            Cursor.lockState = CursorLockMode.None;
     }
 
     private void HandleMovement()
@@ -188,7 +193,6 @@ public class PlayerController : MonoBehaviour
                 PlayerCam.transform.localPosition.z);
             }
         }
-        
     }
 
     private void HandleFootSteps()

@@ -8,6 +8,7 @@ TagManager:
   - Keypad
   - Door
   - AudioLog
+  - Button
   layers:
   - Default
   - TransparentFX

@@ -28,6 +28,12 @@ public class InteractionManager : MonoBehaviour
     static public bool KeyGet1;
     static public bool KeyGet2;
 
+    private string hittag;
+
+    public Animator Button;
+
+    public GameObject gameEndDoor;
+
     void Awake() 
     {
         
@@ -48,6 +54,7 @@ public class InteractionManager : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     interactedObject = hit.transform.gameObject;
+                    hittag = hit.collider.tag;
                     WhichThingWasInteractedWith();
                 }
             }
@@ -67,13 +74,13 @@ public class InteractionManager : MonoBehaviour
 
     private void WhichThingWasInteractedWith()
     {
-        if (hit.collider.tag == "Keypad" && KeypadUI == false)
+        if (hittag == "Keypad" && KeypadUI == false)
             {
                 KeypadUI = true;
                 KeypadDisplay.SetActive(true);
                 disablePlayer();
             }
-        else if (hit.collider.tag == "Door")
+        else if (hittag == "Door")
             DoorInteracted = true;
         else if (interactedObject == Key1)
         {
@@ -85,8 +92,16 @@ public class InteractionManager : MonoBehaviour
             KeyGet2 = true;
             Destroy(Key2);
         }
-        else if (hit.collider.tag == "AudioLog")
+        else if (hittag == "AudioLog")
             AudioLogInteracted = true;
+        else if (hittag == "Button")
+            Button.Play("Pressed", 0, 0.0f);
+        else if (interactedObject == gameEndDoor)
+        {
+            print("congratulations, you've won");
+            return;
+            //HERE IS WHERE YOU DO THE GAME END
+        }
     }
 
     private void disablePlayer()

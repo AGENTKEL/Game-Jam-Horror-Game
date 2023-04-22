@@ -23,6 +23,8 @@ public class MonsterAI : MonoBehaviour
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
+    public GameObject theDoor;
+
     Animator animator;
 
     private void Awake()
@@ -30,6 +32,7 @@ public class MonsterAI : MonoBehaviour
         //player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        theDoor.layer = LayerMask.NameToLayer("Interactable");
     }
 
     private void Update()
@@ -78,7 +81,8 @@ public class MonsterAI : MonoBehaviour
         //Make sure enemy doesn't move
         agent.SetDestination(transform.position);
 
-        transform.LookAt(player);
+        Vector3 lookatplayer = new Vector3(player.position.x, transform.position.y, player.position.z);
+        transform.LookAt(lookatplayer);
         
         PlayerController.dying = true;
 

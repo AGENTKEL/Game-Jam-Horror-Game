@@ -30,6 +30,9 @@ public class KeypadManager : MonoBehaviour
 
     private AudioSource audiosrc;
 
+    public AudioSource BunkerDoorAudio1;
+    public AudioSource BunkerDoorAudio2;
+
     public AudioClip bunkerdoorunlockSound;
 
 
@@ -78,6 +81,8 @@ public class KeypadManager : MonoBehaviour
                     InteractionManager.KeypadUI = false;
                     display.text = "";
                     audiosrc = KeypadTwo.GetComponent<AudioSource>();
+                    BunkerDoorAudio1.clip = bunkerdoorunlockSound;
+                    BunkerDoorAudio1.Play();
                 }
                 else
                 {
@@ -95,6 +100,8 @@ public class KeypadManager : MonoBehaviour
                     audiosrc.Play();
                     InteractionManager.KeypadUI = false;
                     display.text = "";
+                    BunkerDoorAudio2.clip = bunkerdoorunlockSound;
+                    BunkerDoorAudio2.Play();
                 }
                 else
                 {

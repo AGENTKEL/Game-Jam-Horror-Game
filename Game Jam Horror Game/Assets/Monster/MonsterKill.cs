@@ -11,6 +11,7 @@ public class MonsterKill : MonoBehaviour
     public GameObject deathScreen;
 
 
+
     public void KillPlayer()
     {
         Instantiate(deathStinger);
@@ -24,5 +25,6 @@ public class MonsterKill : MonoBehaviour
         Destroy(ambientOff);
         Destroy(chaseMusicOff);
         Time.timeScale = 0f;
+        PlayerController.mouseUnlocked = true;
     }
 }
